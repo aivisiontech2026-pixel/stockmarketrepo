@@ -41,13 +41,14 @@ import yfinance as yf
 
 from intraday_backtest import (
     CFG, CAPITAL, RISK_PCT, MAX_PER_TRADE, MAX_POSITIONS, MAX_DAY_LOSS,
-    MAX_DAY_PROFIT, COST_PER_SIDE, TRAIL_MULT, T_ENTRY_START, T_ENTRY_END,
+    COST_PER_SIDE, TRAIL_MULT, T_ENTRY_START, T_ENTRY_END,
     T_SQUARE_OFF, INTERVAL, NIFTY, SYMBOLS, prepare, nifty_bull, bar_minutes,
 )
 from brokers import get_broker
 
 HERE = Path(__file__).parent
 DB = HERE / "intraday_trades.db"
+DAILY_PROFIT_TARGET = CFG.get("daily_profit_target_rupees", 5000)
 
 # ------------------------------------------------------------------ state ---
 def db():
@@ -146,16 +147,19 @@ def entries_allowed(conn, today, log):
         meta_set(conn, f"blocked:{today}", "daily loss limit")
         log.append(f"DAILY LOSS LIMIT hit (Rs.{pnl:,.0f}) - trading stopped")
         return False
-    if pnl >= MAX_DAY_PROFIT * start_eq:
-        meta_set(conn, f"blocked:{today}", "daily profit target")
-        log.append(f"DAILY PROFIT TARGET hit (Rs.{pnl:,.0f}) - trading stopped")
-        return False
+    if pnl >= DAILY_PROFIT_TARGET and not meta_get(conn, f"target_hit:{today}"):
+        meta_set(conn, f"target_hit:{today}", "1")
+        log.append(f"DAILY PROFIT TARGET reached (Rs.{pnl:,.0f}) - trading continues")
     return True
 
 def process(conn, broker, log):
     today = date.today()
     if meta_get(conn, f"day_start_eq:{today}") is None:
         meta_set(conn, f"day_start_eq:{today}", cash(conn))
+    if meta_get(conn, f"opened:{today}") is None:
+        meta_set(conn, f"opened:{today}", "1")
+        log.append(f"MARKET OPEN {today} - Intraday bot starting "
+                   f"(Cash: Rs.{cash(conn):,.0f}, target Rs.{DAILY_PROFIT_TARGET:,.0f}/day)")
 
     # NIFTY regime
     ndf = yf.download(NIFTY, period="5d", interval=INTERVAL, auto_adjust=True,

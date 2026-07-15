@@ -45,6 +45,7 @@ jobs:
           cd backtest-machine
           if git fetch origin trading-state --depth 1 2>/dev/null; then
             git show FETCH_HEAD:intraday_trades.db > intraday_trades.db
+            git show FETCH_HEAD:options_trades.db > options_trades.db 2>/dev/null || true
             echo "Restored prior state from trading-state branch."
           else
             echo "No prior state — starting fresh at Rs.1,00,000."
@@ -75,6 +76,12 @@ jobs:
           echo "=== OPTIONS ===" | tee -a run_output.txt
           python options_trader.py | tee -a run_output.txt
 
+      - name: Send EOD report (15:30 IST, once/day)
+        if: always()
+        run: |
+          cd backtest-machine
+          python eod_report.py | tee -a run_output.txt
+
       - name: Save trading state
         if: always()
         run: |
@@ -82,6 +89,7 @@ jobs:
           [ -f intraday_trades.db ] || { echo "No db to save."; exit 0; }
           tmp="$(mktemp -d)"
           cp intraday_trades.db "$tmp/"
+          [ -f options_trades.db ] && cp options_trades.db "$tmp/"
           [ -f run_output.txt ] && cp run_output.txt "$tmp/"
           cd "$tmp"
           git init -q

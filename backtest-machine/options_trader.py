@@ -30,6 +30,8 @@ CAPITAL = 100_000  # shared capital pool
 MAX_PER_TRADE = 5_000  # options premium exposure per trade
 PROFIT_TARGET = 0.20  # exit at +20%
 STOP_LOSS = -0.10  # exit at -10%
+TRAIL_ACTIVATE = 0.10  # once up 10%, start trailing
+TRAIL_GIVEBACK = 0.05  # trail 5% below the high-water mark
 T_SQUARE_OFF = 15 * 60 + 15  # 15:15 IST
 INTERVAL = "5m"
 NIFTY = "^NSEI"
@@ -42,7 +44,8 @@ def db_init():
     CREATE TABLE IF NOT EXISTS options_positions(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         symbol TEXT, option_type TEXT, strike REAL, expiry TEXT,
-        qty INTEGER, entry_price REAL, entry_time TEXT);
+        qty INTEGER, entry_price REAL, entry_time TEXT,
+        high_price REAL);
     CREATE TABLE IF NOT EXISTS options_trades(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         symbol TEXT, option_type TEXT, strike REAL, expiry TEXT,
@@ -50,7 +53,23 @@ def db_init():
         entry_time TEXT, exit_time TEXT, pnl REAL, reason TEXT);
     CREATE TABLE IF NOT EXISTS meta(key TEXT PRIMARY KEY, value TEXT);
     """)
+    cols = {row[1] for row in conn.execute("PRAGMA table_info(options_positions)")}
+    if "high_price" not in cols:
+        conn.execute("ALTER TABLE options_positions ADD COLUMN high_price REAL")
     return conn
+
+# ------------------------------------------------------------------ alerts ---
+def telegram(msg):
+    tg = CFG.get("telegram", {})
+    if not (tg.get("bot_token") and tg.get("chat_id")):
+        return
+    import requests
+    try:
+        requests.post(
+            f"https://api.telegram.org/bot{tg['bot_token']}/sendMessage",
+            json={"chat_id": tg["chat_id"], "text": msg}, timeout=10)
+    except Exception as e:
+        print(f"  (telegram alert failed: {e})")
 
 def meta_get(conn, key, default=None):
     row = conn.execute("SELECT value FROM meta WHERE key=?", (key,)).fetchone()
@@ -145,9 +164,9 @@ def open_option(conn, spot, option_type, symbol, today, log):
         return False
 
     conn.execute(
-        "INSERT INTO options_positions(symbol,option_type,strike,expiry,qty,entry_price,entry_time) "
-        "VALUES(?,?,?,?,?,?,?)",
-        (symbol, option_type, strike, expiry_str, qty, premium, datetime.now().isoformat()))
+        "INSERT INTO options_positions(symbol,option_type,strike,expiry,qty,entry_price,entry_time,high_price) "
+        "VALUES(?,?,?,?,?,?,?,?)",
+        (symbol, option_type, strike, expiry_str, qty, premium, datetime.now().isoformat(), premium))
     meta_set(conn, "cash", cash(conn) - cost)
 
     log.append(f"BOUGHT {qty} {symbol} {option_type} {strike} @ Rs.{premium:.2f} "
@@ -174,8 +193,19 @@ def close_option(conn, pos, exit_price, reason, log):
                f"@ Rs.{exit_price:.2f} ({reason}) P&L Rs.{pnl:,.0f} ({pnl_pct:+.1f}%)")
     return pnl
 
+def day_pnl_today(conn, today):
+    row = conn.execute(
+        "SELECT COALESCE(SUM(pnl),0) FROM options_trades WHERE exit_time >= ?",
+        (today.isoformat(),)).fetchone()
+    return row[0]
+
 def process(conn, log, today):
     """Process options signals and manage positions."""
+    if meta_get(conn, f"opened:{today}") is None:
+        meta_set(conn, f"opened:{today}", "1")
+        log.append(f"MARKET OPEN {today} - Options bot starting "
+                   f"(Cash: Rs.{cash(conn):,.0f})")
+
     # Fetch NIFTY and BANKNIFTY
     try:
         nifty_df = yf.download(NIFTY, period="5d", interval=INTERVAL,
@@ -202,12 +232,13 @@ def process(conn, log, today):
     now_min = now.hour * 60 + now.minute
 
     # Get positions
-    positions = conn.execute("SELECT id,symbol,option_type,strike,expiry,qty,entry_price "
+    positions = conn.execute("SELECT id,symbol,option_type,strike,expiry,qty,entry_price,high_price "
                             "FROM options_positions").fetchall()
 
     # Manage existing positions
     for pos_row in positions:
-        pos = dict(zip(["id", "symbol", "option_type", "strike", "expiry", "qty", "entry_price"], pos_row))
+        pos = dict(zip(["id", "symbol", "option_type", "strike", "expiry", "qty",
+                        "entry_price", "high_price"], pos_row))
 
         # Update current price
         if pos["symbol"] == "NIFTY":
@@ -225,11 +256,22 @@ def process(conn, log, today):
 
         pnl_pct = ((current_price - pos["entry_price"]) / pos["entry_price"]) if pos["entry_price"] > 0 else 0
 
-        # Exit on profit target, stop loss, or time
+        # Track high-water mark for trailing stop
+        high_price = max(pos["high_price"] or pos["entry_price"], current_price)
+        if high_price != pos["high_price"]:
+            conn.execute("UPDATE options_positions SET high_price=? WHERE id=?",
+                        (high_price, pos["id"]))
+        high_pct = ((high_price - pos["entry_price"]) / pos["entry_price"]) if pos["entry_price"] > 0 else 0
+        trail_stop_price = high_price * (1 - TRAIL_GIVEBACK)
+
+        # Exit on profit target, stop loss, trailing stop, or time
         if pnl_pct >= PROFIT_TARGET:
             close_option(conn, pos, current_price, f"+{PROFIT_TARGET*100:.0f}% profit", log)
         elif pnl_pct <= STOP_LOSS:
             close_option(conn, pos, current_price, f"{STOP_LOSS*100:.0f}% stop", log)
+        elif high_pct >= TRAIL_ACTIVATE and current_price <= trail_stop_price:
+            close_option(conn, pos, current_price,
+                        f"Trailing stop (locked {TRAIL_GIVEBACK*100:.0f}% off high)", log)
         elif dte <= 1:  # last day before expiry
             close_option(conn, pos, current_price, "Expiry close-out", log)
         elif now_min >= T_SQUARE_OFF:
@@ -269,6 +311,7 @@ def main():
     process(conn, log, today)
     if log:
         print("\n".join(log))
+        telegram(f"Options bot ({CFG.get('mode', 'paper')}):\n" + "\n".join(log))
 
     conn.close()
 
