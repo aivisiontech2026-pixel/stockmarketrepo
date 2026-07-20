@@ -277,6 +277,32 @@ def show_status(conn, prices=None):
     print(f"\nToday's realized P&L: Rs.{pnl:,.0f}")
     print(f"All-time: {n} trades | Rs.{total:,.0f}")
 
+def send_heartbeat(conn, prices=None):
+    """Ping Telegram at most once/hour so you can see the bot is alive even
+    when there are no trades to report (also makes it obvious when GitHub
+    Actions' schedule trigger is running less often than the cron implies)."""
+    now = datetime.now().astimezone()
+    last = meta_get(conn, "last_heartbeat")
+    if last:
+        try:
+            if now - datetime.fromisoformat(last) < timedelta(hours=1):
+                return
+        except ValueError:
+            pass
+    meta_set(conn, "last_heartbeat", now.isoformat())
+
+    today = date.today()
+    positions = get_positions(conn)
+    pnl = day_pnl_today(conn, today)
+    lines = [f"Heartbeat {now:%Y-%m-%d %H:%M} IST ({CFG.get('mode', 'paper')} mode) - bot alive",
+             f"Cash: Rs.{cash(conn):,.0f} | Today's P&L: Rs.{pnl:,.0f} | "
+             f"Open positions: {len(positions)}"]
+    for sym, p in positions.items():
+        last_px = f" | last {prices[sym]:.2f}" if prices and sym in prices else ""
+        lines.append(f"  {sym}: {p['qty']} @ {p['entry']:.2f}{last_px}")
+    telegram("\n".join(lines))
+    conn.commit()
+
 def eod_report(conn):
     today = date.today()
     rows = conn.execute(
@@ -301,6 +327,7 @@ def run_once(conn, broker):
         telegram(f"Intraday bot ({CFG.get('mode', 'paper')}):\n" + "\n".join(log))
     else:
         print(f"[{datetime.now():%H:%M}] no new signals")
+    send_heartbeat(conn, prices)
     return prices
 
 def main():
