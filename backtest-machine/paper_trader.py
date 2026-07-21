@@ -76,9 +76,11 @@ def telegram(msg):
         return
     import requests
     try:
-        requests.post(
+        r = requests.post(
             f"https://api.telegram.org/bot{tg['bot_token']}/sendMessage",
             json={"chat_id": tg["chat_id"], "text": msg}, timeout=10)
+        if not r.ok:
+            print(f"  (telegram alert rejected: {r.status_code} {r.text})")
     except Exception as e:
         print(f"  (telegram alert failed: {e})")
 

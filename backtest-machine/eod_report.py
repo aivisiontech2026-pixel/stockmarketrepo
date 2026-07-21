@@ -27,9 +27,11 @@ def telegram_text(msg):
         return
     import requests
     try:
-        requests.post(
+        r = requests.post(
             f"https://api.telegram.org/bot{tg['bot_token']}/sendMessage",
             json={"chat_id": tg["chat_id"], "text": msg}, timeout=10)
+        if not r.ok:
+            print(f"  (telegram text rejected: {r.status_code} {r.text})")
     except Exception as e:
         print(f"  (telegram text failed: {e})")
 
@@ -39,11 +41,13 @@ def telegram_document(filename, content, caption=None):
         return
     import requests
     try:
-        requests.post(
+        r = requests.post(
             f"https://api.telegram.org/bot{tg['bot_token']}/sendDocument",
             data={"chat_id": tg["chat_id"], "caption": caption or ""},
             files={"document": (filename, content.encode())},
             timeout=20)
+        if not r.ok:
+            print(f"  (telegram document rejected: {r.status_code} {r.text})")
     except Exception as e:
         print(f"  (telegram document failed: {e})")
 
