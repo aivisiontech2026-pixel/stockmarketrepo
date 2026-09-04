@@ -1,0 +1,32 @@
+=== STOCKS ===
+CLOSED HDFCBANK.NS x12 @ 715.00 (Exit signal) P&L Rs.29
+CLOSED AXISBANK.NS x7 @ 1276.00 (Exit signal) P&L Rs.7
+
+=== Intraday portfolio (paper mode) ===
+Cash: Rs.98,916
+No open positions.
+
+Today's realized P&L: Rs.-84
+All-time: 272 trades | Rs.-1,084
+
+=== OPTIONS ===
+[17:59] Options: no open positions | Cash: Rs.100,000
+EOD REPORT 2026-09-04 (15:30 IST)
+
+=== STOCKS ===
+  RELIANCE.NS x6 1322.90->1326.10 Rs.14 (Exit signal)
+  ICICIBANK.NS x6 1436.30->1430.90 Rs.-38 (Exit signal)
+  SBIN.NS x8 1026.50->1024.70 Rs.-19 (Exit signal)
+  WIPRO.NS x50 178.05->177.77 Rs.-19 (Exit signal)
+  NTPC.NS x27 332.55->331.65 Rs.-30 (Exit signal)
+  BHARTIARTL.NS x4 1867.40->1861.43 Rs.-28 (Trailing stop)
+  HDFCBANK.NS x12 712.15->715.00 Rs.29 (Exit signal)
+  AXISBANK.NS x7 1274.30->1276.00 Rs.7 (Exit signal)
+  Stocks total: Rs.-84 | Cash: Rs.98,916
+
+=== OPTIONS (NIFTY/BANKNIFTY) ===
+  no trades closed today
+  Options total: Rs.0 | Cash: Rs.100,000
+
+=== TOTAL ===
+Day P&L: Rs.-84 | Target Rs.5,000 (target not reached)
