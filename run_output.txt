@@ -1,0 +1,39 @@
+=== STOCKS ===
+CLOSED HDFCBANK.NS x13 @ 708.25 (Square-off 15:15) P&L Rs.258
+CLOSED SBIN.NS x9 @ 996.60 (Exit signal) P&L Rs.-30
+CLOSED AXISBANK.NS x7 @ 1246.00 (Exit signal) P&L Rs.-19
+CLOSED LT.NS x2 @ 3913.60 (Exit signal) P&L Rs.-2
+CLOSED NTPC.NS x26 @ 334.77 (Trailing stop) P&L Rs.-1
+CLOSED ASIANPAINT.NS x3 @ 2462.50 (Exit signal) P&L Rs.-15
+
+=== Intraday portfolio (paper mode) ===
+Cash: Rs.98,905
+No open positions.
+
+Today's realized P&L: Rs.90
+All-time: 297 trades | Rs.-1,095
+
+=== OPTIONS ===
+[18:05] Options: no open positions | Cash: Rs.100,000
+EOD REPORT 2026-09-11 (15:30 IST)
+
+=== STOCKS ===
+  ICICIBANK.NS x6 1381.00->1379.50 Rs.-14 (Exit signal)
+  TCS.NS x4 2216.00->2211.00 Rs.-25 (Exit signal)
+  INFY.NS x8 1041.30->1040.40 Rs.-12 (Exit signal)
+  WIPRO.NS x53 167.18->166.76 Rs.-27 (Trailing stop)
+  SUNPHARMA.NS x4 1851.80->1847.10 Rs.-23 (Exit signal)
+  HDFCBANK.NS x13 688.00->708.25 Rs.258 (Square-off 15:15)
+  SBIN.NS x9 999.30->996.60 Rs.-30 (Exit signal)
+  AXISBANK.NS x7 1247.90->1246.00 Rs.-19 (Exit signal)
+  LT.NS x2 3912.10->3913.60 Rs.-2 (Exit signal)
+  NTPC.NS x26 334.60->334.77 Rs.-1 (Trailing stop)
+  ASIANPAINT.NS x3 2466.00->2462.50 Rs.-15 (Exit signal)
+  Stocks total: Rs.90 | Cash: Rs.98,905
+
+=== OPTIONS (NIFTY/BANKNIFTY) ===
+  no trades closed today
+  Options total: Rs.0 | Cash: Rs.100,000
+
+=== TOTAL ===
+Day P&L: Rs.90 | Target Rs.5,000 (target not reached)
