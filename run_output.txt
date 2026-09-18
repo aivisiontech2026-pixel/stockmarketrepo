@@ -1,0 +1,55 @@
+=== STOCKS ===
+OPENED AXISBANK.NS x7 @ 1247.30 stop 1241.57 (Rs.8,731)
+CLOSED AXISBANK.NS x7 @ 1257.00 (Square-off 15:15) P&L Rs.63
+CLOSED LT.NS x2 @ 3869.10 (Exit signal) P&L Rs.-19
+OPENED LT.NS x2 @ 3884.90 stop 3870.92 (Rs.7,770)
+CLOSED LT.NS x2 @ 3885.00 (Square-off 15:15) P&L Rs.-4
+CLOSED POWERGRID.NS x33 @ 265.25 (Trailing stop) P&L Rs.-30
+OPENED BAJAJFINSV.NS x4 @ 1861.80 stop 1854.34 (Rs.7,447)
+CLOSED BAJAJFINSV.NS x4 @ 1860.00 (Exit signal) P&L Rs.-12
+OPENED BAJAJFINSV.NS x4 @ 1862.40 stop 1854.88 (Rs.7,450)
+CLOSED BAJAJFINSV.NS x4 @ 1860.30 (Exit signal) P&L Rs.-13
+OPENED NTPC.NS x27 @ 328.40 stop 327.23 (Rs.8,867)
+CLOSED NTPC.NS x27 @ 328.35 (Exit signal) P&L Rs.-7
+OPENED ONGC.NS x38 @ 233.34 stop 232.63 (Rs.8,867)
+CLOSED ONGC.NS x38 @ 233.53 (Trailing stop) P&L Rs.2
+OPENED ASIANPAINT.NS x3 @ 2450.70 stop 2439.97 (Rs.7,352)
+CLOSED ASIANPAINT.NS x3 @ 2464.50 (Square-off 15:15) P&L Rs.37
+OPENED BHARTIARTL.NS x4 @ 1842.30 stop 1835.36 (Rs.7,369)
+CLOSED BHARTIARTL.NS x4 @ 1841.90 (Exit signal) P&L Rs.-6
+OPENED BHARTIARTL.NS x4 @ 1844.70 stop 1837.27 (Rs.7,379)
+CLOSED BHARTIARTL.NS x4 @ 1839.68 (Trailing stop) P&L Rs.-25
+
+=== Intraday portfolio (paper mode) ===
+Cash: Rs.98,513
+No open positions.
+
+Today's realized P&L: Rs.-54
+All-time: 338 trades | Rs.-1,487
+
+=== OPTIONS ===
+[18:16] Options: no open positions | Cash: Rs.100,000
+EOD REPORT 2026-09-18 (15:30 IST)
+
+=== STOCKS ===
+  RELIANCE.NS x7 1244.10->1242.20 Rs.-19 (Exit signal)
+  BAJAJFINSV.NS x4 1865.40->1860.90 Rs.-22 (Exit signal)
+  AXISBANK.NS x7 1247.30->1257.00 Rs.63 (Square-off 15:15)
+  LT.NS x2 3876.10->3869.10 Rs.-19 (Exit signal)
+  LT.NS x2 3884.90->3885.00 Rs.-4 (Square-off 15:15)
+  POWERGRID.NS x33 266.00->265.25 Rs.-30 (Trailing stop)
+  BAJAJFINSV.NS x4 1861.80->1860.00 Rs.-12 (Exit signal)
+  BAJAJFINSV.NS x4 1862.40->1860.30 Rs.-13 (Exit signal)
+  NTPC.NS x27 328.40->328.35 Rs.-7 (Exit signal)
+  ONGC.NS x38 233.34->233.53 Rs.2 (Trailing stop)
+  ASIANPAINT.NS x3 2450.70->2464.50 Rs.37 (Square-off 15:15)
+  BHARTIARTL.NS x4 1842.30->1841.90 Rs.-6 (Exit signal)
+  BHARTIARTL.NS x4 1844.70->1839.68 Rs.-25 (Trailing stop)
+  Stocks total: Rs.-54 | Cash: Rs.98,513
+
+=== OPTIONS (NIFTY/BANKNIFTY) ===
+  no trades closed today
+  Options total: Rs.0 | Cash: Rs.100,000
+
+=== TOTAL ===
+Day P&L: Rs.-54 | Target Rs.5,000 (target not reached)
