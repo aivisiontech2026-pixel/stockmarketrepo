@@ -1,0 +1,48 @@
+=== STOCKS ===
+OPENED RELIANCE.NS x7 @ 1221.90 stop 1216.26 (Rs.8,553)
+CLOSED HDFCBANK.NS x12 @ 735.58 (Trailing stop) P&L Rs.11
+OPENED SBIN.NS x9 @ 981.00 stop 976.39 (Rs.8,829)
+CLOSED SBIN.NS x9 @ 983.00 (Square-off 15:15) P&L Rs.13
+OPENED LT.NS x2 @ 3869.60 stop 3849.12 (Rs.7,739)
+OPENED WIPRO.NS x54 @ 164.30 stop 163.30 (Rs.8,872)
+CLOSED WIPRO.NS x54 @ 164.02 (Square-off 15:15) P&L Rs.-20
+OPENED POWERGRID.NS x33 @ 268.55 stop 267.19 (Rs.8,862)
+CLOSED POWERGRID.NS x33 @ 269.50 (Square-off 15:15) P&L Rs.26
+OPENED BAJAJFINSV.NS x5 @ 1767.90 stop 1758.91 (Rs.8,840)
+CLOSED BAJAJFINSV.NS x5 @ 1766.30 (Exit signal) P&L Rs.-13
+OPENED NTPC.NS x27 @ 326.05 stop 324.34 (Rs.8,803)
+CLOSED NTPC.NS x27 @ 326.60 (Square-off 15:15) P&L Rs.10
+OPENED ONGC.NS x38 @ 235.94 stop 235.11 (Rs.8,966)
+CLOSED ONGC.NS x38 @ 235.79 (Exit signal) P&L Rs.-11
+CLOSED RELIANCE.NS x7 @ 1226.00 (Square-off 15:15) P&L Rs.24
+CLOSED LT.NS x2 @ 3876.20 (Square-off 15:15) P&L Rs.9
+
+=== Intraday portfolio (paper mode) ===
+Cash: Rs.98,219
+No open positions.
+
+Today's realized P&L: Rs.46
+All-time: 384 trades | Rs.-1,781
+
+=== OPTIONS ===
+[19:54] Options: no open positions | Cash: Rs.100,000
+EOD REPORT 2026-09-25 (15:30 IST)
+
+=== STOCKS ===
+  HDFCBANK.NS x12 734.25->735.58 Rs.11 (Trailing stop)
+  SBIN.NS x9 981.00->983.00 Rs.13 (Square-off 15:15)
+  WIPRO.NS x54 164.30->164.02 Rs.-20 (Square-off 15:15)
+  POWERGRID.NS x33 268.55->269.50 Rs.26 (Square-off 15:15)
+  BAJAJFINSV.NS x5 1767.90->1766.30 Rs.-13 (Exit signal)
+  NTPC.NS x27 326.05->326.60 Rs.10 (Square-off 15:15)
+  ONGC.NS x38 235.94->235.79 Rs.-11 (Exit signal)
+  RELIANCE.NS x7 1221.90->1226.00 Rs.24 (Square-off 15:15)
+  LT.NS x2 3869.60->3876.20 Rs.9 (Square-off 15:15)
+  Stocks total: Rs.46 | Cash: Rs.98,219
+
+=== OPTIONS (NIFTY/BANKNIFTY) ===
+  no trades closed today
+  Options total: Rs.0 | Cash: Rs.100,000
+
+=== TOTAL ===
+Day P&L: Rs.46 | Target Rs.5,000 (target not reached)
