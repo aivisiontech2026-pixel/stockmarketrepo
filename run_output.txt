@@ -1,0 +1,24 @@
+=== STOCKS ===
+[21:34] no new signals
+
+=== Intraday portfolio (paper mode) ===
+Cash: Rs.97,829
+No open positions.
+
+Today's realized P&L: Rs.0
+All-time: 402 trades | Rs.-2,171
+
+=== OPTIONS ===
+[21:34] Options: no open positions | Cash: Rs.100,000
+EOD REPORT 2026-10-02 (15:30 IST)
+
+=== STOCKS ===
+  no trades closed today
+  Stocks total: Rs.0 | Cash: Rs.97,829
+
+=== OPTIONS (NIFTY/BANKNIFTY) ===
+  no trades closed today
+  Options total: Rs.0 | Cash: Rs.100,000
+
+=== TOTAL ===
+Day P&L: Rs.0 | Target Rs.5,000 (target not reached)
